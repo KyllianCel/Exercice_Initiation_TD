@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Exemple simple</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="menu">
+        <h3>Menu</h3>
+        <input type="checkbox" id="afficheLien"> Lien et images<br>
+        <input type="checkbox" id="afficheElements"> Des éléments<br>
+        <input type="checkbox" id="afficheProgress"> Barres de progression<br>
+    </div>
+
+    <div id="liens">
+        <h3>Lien et images</h3>
+        <a href="https://en.wikipedia.org/" target="_blank">La page principale de Wikipedia</a>
+        <br>
+        <img src="https://www.google.fr/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google">
+    </div>
+
+    <div id="elements" class="section">
+        <h3>Des éléments !</h3>
+        <input type="text" value="Premiers pas avec Javascript">
+        <br><br>
+
+        <input type="radio" name="choix" id="choix1" value="1"> Choix N°1
+        <input type="radio" name="choix" id="choix2" value="2" checked> Choix N°2
+        <input type="radio" name="choix"id="choix3" value="3"> Choix N°3
+        <br><br>
+
+        <input type="password" value="123456">
+        <br><br>
+
+        <input type="range" min="0" max="100" value="50"> <span>Volume</span>
+        <output> 0 </output>
+        <br><br>
+
+        <label for="mute">Une case à cocher</label>
+        <input type="checkbox" id="mute">
+        <br><br>
+
+        Date : <input type="date">
+        <br><br>
+
+        <button>Ok</button>
+    </div>
+
+    <div id="progress" class="section">
+        <h3>Barres de progression</h3>
+        Téléchargement en cours :
+        <progress value="30" max="100"></progress>
+        <br><br>
+        Espace disponible :
+        <progress value="70" max="100"></progress>
+    </div>
+
+    <script>
+        // 1. Modifier le lien Wikipédia
+        const lienWiki = document.querySelector('a');
+
+        lienWiki.href = "https://fr.wikipedia.org";
+
+        // 2. Vérifier si le texte est "Oui" ou "Non" au clic du bouton "Ok"
+        const bouton = document.querySelector('button');
+
+        const inputTexte = document.querySelector('input[type="text"]');
+
+        bouton.addEventListener('click', function() {
+            const valeur = inputTexte.value.trim(); 
+
+            if (valeur !== "Oui" && valeur !== "Non") {
+                inputTexte.value = "Il faut mettre Oui ou Non";
+            }
+        });
+
+        // 3. changment de textes dans les labels avec nextSiblings
+        const radio1 = document.getElementById('choix1');
+        const radio2 = document.getElementById('choix2');
+        const radio3 = document.getElementById('choix3');
+
+        radio1.nextSibling.textContent = ' HP';
+        radio2.nextSibling.textContent = ' Casque';
+        radio3.nextSibling.textContent = ' Bluetooth';
+
+        
+        const radios = document.querySelectorAll('input[name="choix"]');
+
+        // 4. modifier le texte du volume selon notre choix avec l'est input radio
+        const spanVolume = document.querySelector('input[type="range"] + span');
+                        
+        radios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === "1") {
+                    spanVolume.textContent = "Volume HP";
+                } else if (this.value === "2") {
+                    spanVolume.textContent = "Volume Casque";
+                } else if (this.value === "3") {
+                    spanVolume.textContent = "Volume Bluetooth";
+                }
+            });
+        });
+
+        // 5. donner la valeur maximale du slider à 100 et l'afficher
+        const slider = document.querySelector('input[type="range"]');
+        const output = document.querySelector('output');
+
+        
+        slider.addEventListener('input', function() {
+            output.textContent = this.value; 
+        });
+        
+        slider.max = 100;
+
+        console.log("Valeur max du volume :", slider.max);
+
+        // 6. implémentation de la case à cocher mute et désactiver le slider de volume 
+        const labelMute = document.querySelector("label[for='mute']");
+        
+        labelMute.textContent = "Mute";
+
+        const muteCheckbox = document.querySelector('#mute');
+
+        muteCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                slider.disabled = true;
+            } else {
+                slider.disabled = false;
+            }
+        });
+
+        // 7. Ajout d'une image à la fin de la section "Lien et Images"
+        const sectionLiens = document.getElementById("liens");
+
+        const nouvelleImage = document.createElement("img");
+        nouvelleImage.src = "https://upload.wikimedia.org/wikipedia/commons/b/bd/UPHF_logo.svg";
+        nouvelleImage.width = 200;
+
+        sectionLiens.appendChild(nouvelleImage);
+
+        // 8. afficher / cacher les sections
+        window.addEventListener("DOMContentLoaded", function () {
+            // Cacher toutes les sections
+            document.querySelectorAll(".section, #liens").forEach(sec => {
+                sec.style.display = "none";
+            });
+
+            // Forcer toutes les cases à être décochées
+            const cases = document.querySelectorAll("#menu input[type='checkbox']");
+            cases.forEach(c => c.checked = false);
+
+            cases.forEach(c => {
+                c.addEventListener("change", function () {
+                    let section;
+                    if (this.id === "afficheLien") section = document.getElementById("liens");
+                    if (this.id === "afficheElements") section = document.getElementById("elements");
+                    if (this.id === "afficheProgress") section = document.getElementById("progress");
+
+                    if (section) {
+                        section.style.display = this.checked ? "block" : "none";
+                    }
+                });
+            });
+        });
+
+        // 9. Récupérer l'année choisie et l'afficher dans la console 
+        const inputDate = document.querySelector('input[type="date"]');
+
+        inputDate.addEventListener('change', function() {
+            const date = new Date(this.value);
+            const annee = date.getFullYear();
+            console.log("Année choisie :", annee);
+        });
+
+
+        // 10. Faire progresser les barres de progression
+        const progressBars = document.querySelectorAll('progress');
+
+        progressBars.forEach(bar => bar.value = 0);
+
+        setInterval(function() {
+            progressBars.forEach(bar => {
+                if (bar.value < bar.max) {
+                    bar.value += 5;
+                }
+            });
+        }, 1000);
+
+    </script>
+</body>
+</html>

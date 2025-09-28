@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    width: 300px;
+    margin: 20px auto;
+    border: 1px solid rgb(15, 212, 212);
+    padding: 10px;
+}
+h3 {
+    margin: 5px 0;
+}
+img {
+    display: block;
+    margin: 10px auto;
+    width: 200px;
+}
+.section {
+    border-top: 1px solid black;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+progress {
+    width: 150px;
+}

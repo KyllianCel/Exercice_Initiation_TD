@@ -1,0 +1,26 @@
+table {
+    border-collapse: collapse;
+    margin: 20px auto;
+    width: 350px;
+}
+th {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+input {
+    width: 90%;
+    padding: 5px;
+    text-align: right;
+}
+img {
+    width: 60px;
+    height: 60px;
+}
+  
